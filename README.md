@@ -2,7 +2,7 @@
 
 ## Membres
 - Arthur DENAUX (fortwoone)
-- Eliott BOURDON-NOVELLAS (lapatate)
+- Eliott BOURDON-NOVELLAS (Lapatate82)
 - Eliott NEE-CHIROL (Eliitt)
 - Ulysse CHASSEIGNE (Dapoce)
 - Clément LAGAGNE (Clem25)
