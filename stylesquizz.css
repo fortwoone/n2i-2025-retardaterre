@@ -1,0 +1,129 @@
+/* Reset et police de base */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* En-tête */
+header.center {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #2c3e50;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.ttpx h1 {
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Structure principale */
+main {
+    display: flex;
+    justify-content: center;
+}
+
+section.center.flex {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Le conteneur principal du quiz */
+.verticalbigborder {
+    background-color: white;
+    width: 100%;
+    max-width: 800px;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+}
+
+/* Style des questions */
+.verticalbigborder>p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    padding-left: 10px;
+    border-left: 5px solid #3498db;
+}
+
+/* Conteneur des réponses */
+.horizontal.enormousborder {
+    display: flex;
+    flex-direction: column;
+    /* Empile les réponses */
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Style des lignes de réponse (généré par le JS pour envelopper le texte) */
+.answer-row {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.answer-row:hover {
+    background-color: #eef2f7;
+}
+
+/* Checkbox personnalisée */
+input.boxed {
+    margin-right: 15px;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+/* États de validation (ajoutés par JS) */
+.correct-answer {
+    background-color: #d4edda !important;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.wrong-answer {
+    background-color: #f8d7da !important;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+/* Bouton de validation */
+#validate-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#validate-btn:hover {
+    background-color: #2980b9;
+}
+
+#score-display {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 20px;
+    font-weight: bold;
+}
