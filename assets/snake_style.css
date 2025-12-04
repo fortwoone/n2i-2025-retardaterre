@@ -1,5 +1,20 @@
+@font-face {
+    font-family: RetroGaming;
+    src: url("fonts/Retro Gaming.ttf");
+    font-size: medium;
+}
+
 body{
-    background-color: #1dc51d;
+    background-color: #d3ce65;
+    font-family: RetroGaming;
+    font-size: medium;
+}
+
+
+#container{
+    display: flex;
+    align-content: space-evenly;
+    justify-content: center;
 }
 
 canvas{
