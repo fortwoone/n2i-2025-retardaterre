@@ -101,7 +101,6 @@ canvas {
 }
 
 .snake.head {
-    /* Head can have a different image if needed */
     background-image: url("");
 }
 
