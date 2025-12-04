@@ -3,13 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Snake</title>
-    <script src="../scripts/snake.js"></script>
-    <link rel="stylesheet" href="snake_style.css" class="css">
     <link rel="stylesheet" href="../assets/snake_style.css">
+    <script src="snake.js" defer></script>
 </head>
-    <body>
-        <div id="container">
-            <canvas width="300" height="300"></canvas>
+<body>
+    <div id="container">
+        <canvas width="300" height="300"></canvas>
+        <div>
+            <div class="scores">
+                <h1 id="score">000</h1>
+                <h1 id="highscore">000</h1>
+            </div>
+            <div class="game-border-1">
+                <div class="game-border-2">
+                    <div class="game-border-3">
+                        <div id="game-board"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </body>
+        <h1 id="instruction-text">Press Space to Start</h1>
+        <img src="" alt="snake-logo">
+    </div>
+</body>
 </html>
