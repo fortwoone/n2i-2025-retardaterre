@@ -5,6 +5,26 @@ const container_clavier = document.getElementById('container-clavier');
 const canva = document.getElementById('canva');
 const button = document.getElementById('search-btn');
 
+// Callback function that returns the search string on each modification
+function onSearchChange(searchString) {
+    console.log('Search string updated:', searchString);
+    
+    // Check if "snake" was typed (case-insensitive)
+    if (searchString.toLowerCase().trim() === 'snake') {
+        openSnakePopup();
+    }
+    
+    return searchString;
+}
+
+// Function to open the snake popup
+function openSnakePopup() {
+    const snakePopup = document.getElementById('snake-popup');
+    if (snakePopup) {
+        snakePopup.style.display = 'flex';
+    }
+}
+
 // Ajout de l'événement `dragstart` aux lettres
 letters.forEach((letter) => {
   letter.addEventListener('dragstart', (event) => {
@@ -29,11 +49,13 @@ searchBar.addEventListener('drop', (event) => {
     // If the dropped tile is the back-arrow (explicit id or displayed as '←'), remove last char
     if (droppedLetterId === 'my-back') {
         searchBar.value = searchBar.value.slice(0, -1);
+        onSearchChange(searchBar.value);
         return;
     }
     const visible = (Hletter.textContent || Hletter.innerText || '').trim();
     if (visible === '←') {
         searchBar.value = searchBar.value.slice(0, -1);
+        onSearchChange(searchBar.value);
         return;
     }
 
@@ -45,6 +67,7 @@ searchBar.addEventListener('drop', (event) => {
 
     // Append the dropped letter to the search bar
     searchBar.value += letter;
+    onSearchChange(searchBar.value);
 });
 
 // Make the back-arrow tile clickable: clicking it deletes the last character
@@ -53,6 +76,7 @@ if (backTile) {
     backTile.addEventListener('click', (e) => {
         e.stopPropagation();
         searchBar.value = searchBar.value.slice(0, -1);
+        onSearchChange(searchBar.value);
     });
 }
 

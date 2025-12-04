@@ -52,51 +52,6 @@
                 <button onclick="recognizeLetter()">Reconnaître</button>
             </div>
         </div>
-        <div id="text">
-            <p>
-                texte pour tester la barre de recherche
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br><br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-
-                <br><br>
-                <br>
-                <br>
-                <br>
-                oui
-                <br>
-                non
-                <br>
-                nik
-                <br>
-                nig
-                <br>
-                sale
-                <br>
-                sui
-                <br>
-                salo
-                <br>
-                for
-                <br>
-                ta
-            </p>
-        </div>
-
-
 
 
         <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
@@ -106,6 +61,14 @@
             <div class="modal-content" role="document">
                 <button id="help-close" class="close-btn">Fermer</button>
                 <iframe id="help-iframe" src="help.html" title="Aide - Utiliser la barre de recherche"></iframe>
+            </div>
+        </div>
+
+        <!-- Snake popup (empty) -->
+        <div id="snake-popup" class="modal" aria-hidden="true">
+            <div class="modal-content" role="document">
+                <button class="close-btn" onclick="document.getElementById('snake-popup').style.display='none'">Fermer</button>
+                <!-- Empty content for snake popup -->
             </div>
         </div>
 
