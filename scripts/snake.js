@@ -1,41 +1,88 @@
-//Define HTML elements
-const canvas = document.getElementById('container');
+(function () {
+    'use strict'
 
-console.log(canvas)
+    // Game settings
+    const settings = {
+        gridSize: 15,
+        tileSize: 20,
+        speedMs: 200
+    }
 
-//Define game variables
-let snake = [{x: 10, y: 10}];
+    // Game state
+    let canvas, ctx
+    let snake = []
+    let score = 0
 
-//Draw game map, snake, food
+    function init() {
+        canvas = document.getElementById('game-canvas')
+        if (!canvas) {
+            console.error('Canvas not found')
+            return
+        }
 
-function draw () {
-    canvas.innerHTML = '';
-    drawSnake();
-}
+        ctx = canvas.getContext('2d')
+        
+        // Initialize snake with 4 segments
+        snake = [
+            { x: 7, y: 7 },
+            { x: 6, y: 7 },
+            { x: 5, y: 7 },
+            { x: 4, y: 7 }
+        ]
 
-//Draw Snake
-function drawSnake() {
-    snake.forEach((segment) => {
-        const snakeElement = createGameElement('div' , 'snake');
-        setPosition(snakeElement, segment);
-        canvas.appendChild(snakeElement);
-    });
-}
+        score = 0
+        updateScore()
+        draw()
+    }
 
-//Create game element (snake and food)
+    function updateScore() {
+        const scoreEl = document.getElementById('score')
+        if (scoreEl) scoreEl.textContent = String(score).padStart(3, '0')
+    }
 
-function createGameElement(tag, className) {
-    const element = document.createElement(tag);
-    element.className = className;
-    return element;
-}
+    function draw() {
+        if (!ctx) return
 
-//Set the position of game elements
-function setPosition(element, position) {
-    element.style.gridColumn = position.x;
-    element.style.gridRow = position.y;
+        // Clear canvas (white background)
+        ctx.fillStyle = '#ffffff'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-}
+        // Draw grid
+        ctx.strokeStyle = '#e0e0e0'
+        ctx.lineWidth = 1
+        for (let i = 0; i <= settings.gridSize; i++) {
+            const pos = i * settings.tileSize
+            ctx.beginPath()
+            ctx.moveTo(pos, 0)
+            ctx.lineTo(pos, canvas.height)
+            ctx.stroke()
 
-//test
-draw();
+            ctx.beginPath()
+            ctx.moveTo(0, pos)
+            ctx.lineTo(canvas.width, pos)
+            ctx.stroke()
+        }
+
+        // Draw snake
+        snake.forEach((segment, index) => {
+            const x = segment.x * settings.tileSize
+            const y = segment.y * settings.tileSize
+            const color = index === 0 ? '#9ef4c9' : '#41d17b' // head is lighter
+
+            ctx.fillStyle = color
+            ctx.fillRect(x + 1, y + 1, settings.tileSize - 2, settings.tileSize - 2)
+        })
+    }
+
+    // Expose to window for your implementation
+    window._snakeGame = {
+        snake,
+        settings,
+        draw,
+        updateScore,
+        getState: () => ({ snake, score })
+    }
+
+    // Initialize on page load
+    init()
+})()
