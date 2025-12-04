@@ -1,3 +1,7 @@
 body{
-    background-color: lime;
+    background-color: #1dc51d;
+}
+
+canvas{
+    border: 2px solid black;
 }
