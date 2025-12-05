@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Aide - Barre de recherche</title>
+    <style>
+      body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:16px;color:#111}
+      h1{font-size:18px;margin-bottom:8px}
+      p{line-height:1.4}
+      ul{margin:8px 0 16px 20px}
+      .example{background:#f7f7f7;border-left:4px solid #ccc;padding:8px;margin-top:8px}
+      footer{font-size:12px;color:#666;margin-top:18px}
+    </style>
+  </head>
+  <body>
+    <h1>Comment utiliser la barre de recherche</h1>
+    <p>Cette interface permet d'écrire une recherche en déposant des lettres sur la barre, ou en utilisant la gomme et la reconnaissance d'écriture.</p>
+    <ul>
+      <li>Cliquer sur la barre pour ouvrir le clavier.</li>
+      <li>Glisser une lettre depuis le clavier vers la barre pour l'ajouter.</li>
+      <li>Le bouton <strong>←</strong> supprime le dernier caractère (en cliquant ou en déposant).</li>
+      <li>Le bouton <strong>Loupe</strong> exécute la recherche et surligne les résultats dans le texte.</li>
+      <li>Dans la zone de dessin, cliquez <strong>Effacer</strong> pour réinitialiser ou <strong>Reconnaître</strong> pour détecter la lettre dessinée.</li>
+    </ul>
+    <div class="example">
+      <strong>Exemple :</strong>
+      <p>Pour rechercher "oui" : glissez `o`, `u`, `i` sur la barre, puis cliquez sur la loupe.</p>
+    </div>
+    <h2>Galerie des lettres</h2>
+    <p>Images des lettres disponibles pour glisser-déposer :</p>
+    <div id="gallery" aria-live="polite"></div>
+    <noscript>
+      <p>JavaScript est nécessaire pour afficher la galerie d'images.</p>
+    </noscript>
+    <footer>Fermer cette fenêtre pour revenir à la page.</footer>
+    <script>
+      (function(){
+        const gallery = document.getElementById('gallery');
+        if(!gallery) return;
+        const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+        let loaded = 0;
+        letters.forEach(l => {
+          const img = document.createElement('img');
+          img.src = `image/${l}.png`;
+          img.alt = `Lettre ${l}`;
+          img.width = 72;
+          img.height = 72;
+          img.style.objectFit = 'contain';
+          img.style.border = '1px solid #ddd';
+          img.style.borderRadius = '4px';
+          img.style.padding = '6px';
+          img.style.background = '#fff';
+          img.style.margin = '6px';
+          img.addEventListener('load', () => {
+            loaded++;
+          });
+          img.addEventListener('error', () => {
+            img.style.display = 'none';
+          });
+
+          const wrapper = document.createElement('div');
+          wrapper.style.display = 'inline-block';
+          wrapper.style.textAlign = 'center';
+          wrapper.style.width = '96px';
+          wrapper.appendChild(img);
+          const cap = document.createElement('div');
+          cap.textContent = l.toUpperCase();
+          cap.style.fontSize = '12px';
+          cap.style.marginTop = '4px';
+          wrapper.appendChild(cap);
+          gallery.appendChild(wrapper);
+        });
+
+        // If after short delay no images loaded, show fallback
+        setTimeout(() => {
+          if (loaded === 0) {
+            gallery.innerHTML = '<p>Aucune image trouvée dans le dossier <code>image/</code>.</p>';
+          }
+        }, 400);
+      })();
+    </script>
+  </body>
+</html>

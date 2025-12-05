@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="search-bar.css">
+    </head>
+    <body>
+        <!-- TODO: ajouter la redirection du formulaire quand les autres pages seront faites -->
+        <div class="search-container">
+                <input id="search-bar" type="text" placeholder="Rechercher..." readonly>
+                <button id="search-btn">
+                    <img src="./image/loupe.png" alt="Chercher">
+                </button>
+                <button id="help-btn" aria-label="Aide">Aide</button>
+        </div>
+        <div id="container-clavier">
+            <div draggable="true" class="letter" id="my-a"><p>A</p></div>
+            <div draggable="true" class="letter" id="my-z"><p>Z</p></div>
+            <div draggable="true" class="letter" id="my-e"><p>E</p></div>
+            <div draggable="true" class="letter" id="my-r"><p>R</p></div>
+            <div draggable="true" class="letter" id="my-t"><p>T</p></div>
+            <div draggable="true" class="letter" id="my-y"><p>Y</p></div>
+            <div draggable="true" class="letter" id="my-u"><p>U</p></div>
+            <div draggable="true" class="letter" id="my-i"><p>I</p></div>
+            <div draggable="true" class="letter" id="my-o"><p>O</p></div>
+            <div draggable="true" class="letter" id="my-p"><p>P</p></div>
+            <div draggable="true" class="letter" id="my-q"><p>Q</p></div>
+            <div draggable="true" class="letter" id="my-s"><p>S</p></div>
+            <div draggable="true" class="letter" id="my-d"><p>D</p></div>
+            <div draggable="true" class="letter" id="my-f"><p>F</p></div>
+            <div draggable="true" class="letter" id="my-g"><p>G</p></div>
+            <div draggable="true" class="letter" id="my-h"><p>H</p></div>
+            <div draggable="true" class="letter" id="my-j"><p>J</p></div>
+            <div draggable="true" class="letter" id="my-k"><p>K</p></div>
+            <div draggable="true" class="letter" id="my-l"><p>L</p></div>
+            <div draggable="true" class="letter" id="my-m"><p>M</p></div>
+            <div draggable="true" class="letter" id="my-w"><p>W</p></div>
+            <div draggable="true" class="letter" id="my-x"><p>X</p></div>
+            <div draggable="true" class="letter" id="my-c"><p>C</p></div>
+            <div draggable="true" class="letter" id="my-v"><p>V</p></div>
+            <div draggable="true" class="letter" id="my-b"><p>B</p></div>
+            <div draggable="true" class="letter" id="my-n"><p>N</p></div>
+            <div draggable="true" class="letter" id="my-_"><p>_</p></div>
+            <div draggable="true" class="letter" id="my-back"><p>←</p></div>
+
+        </div>
+        <div id="canva">
+            <canvas id="drawingCanvas" width="300" height="300"></canvas>
+            <p id="result"></p>
+            <div>
+                <button onclick="clearCanvas()">Effacer</button>
+                <button onclick="recognizeLetter()">Reconnaître</button>
+            </div>
+        </div>
+
+
+        <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+        
+        <!-- Help modal with iframe -->
+        <div id="help-modal" class="modal" aria-hidden="true">
+            <div class="modal-content" role="document">
+                <button id="help-close" class="close-btn">Fermer</button>
+                <iframe id="help-iframe" src="help.html" title="Aide - Utiliser la barre de recherche"></iframe>
+            </div>
+        </div>
+
+        <!-- Snake popup (empty) -->
+        <div id="snake-popup" class="modal" aria-hidden="true">
+            <div class="modal-content" role="document">
+                <button class="close-btn" onclick="document.getElementById('snake-popup').style.display='none'">Fermer</button>
+                <!-- Empty content for snake popup -->
+            </div>
+        </div>
+
+        <script src="search-bar.js"></script>
+    </body>
+</html>

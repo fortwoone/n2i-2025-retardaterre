@@ -89,6 +89,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         scoreDiv.textContent = `Votre score : ${score} / ${correctAnswers.length}`;
+        if (score > 5) {
+            scoreDiv.textContent += " inclusion";
+        }
         scoreDiv.style.color = score > 5 ? "#27ae60" : "#c0392b";
 
         scoreDiv.scrollIntoView({ behavior: "smooth" });
