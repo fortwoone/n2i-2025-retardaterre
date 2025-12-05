@@ -15,6 +15,16 @@ function clicker(){
     }else{
         showxfirstchar()
     }
+    switch (click){
+        case 10: alert("Des indices peuvent être trouvé sur cette page, le dernier est a la fin du texte")
+            break
+        case 500: alert("29 gras")
+            break
+        case 704: alert("code : haut droit, bas gauche, bas droit, haut gauche")
+            break
+        case txt.length: alert("Entrer \"demarche\" dans la SearchBar")
+            break
+    }
     c.innerHTML = total;
 }
 function reset(){
