@@ -2,13 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../style/style.css">
     <title>Title</title>
 </head>
 <body>
-    <button onclick="clicker()" id="demo">add</button>
-    <button onclick="reset()">reset</button>
-    <p id="total">0</p>
-    <p id="str"></p>
+    <div id="bodyStyle" class="boxStyle">
+        <div>
+            <p>Total: <span id="total">0</span></p>
+        </div>
+
+        <div class="flex">
+        <button class="buttonStyleFullWidth" onmousedown="startClicking()"
+                onmouseup="stopClicking()" onclick="clicker()"
+                onmouseleave="stopClicking()">add</button>
+        <button class="buttonStyleFullWidth" onclick="reset()">reset</button>
+        </div>
+
+        <div id="str" class="boxInterior">
+        </div>
+
+        <div class="buttonRetour">
+            <a href="../main.html">
+                <button class="buttonStyle"> Page d'accueil </button>
+            </a>
+        </div>
+    </div>
+
 
     <script src ="Clicker.js"></script>
 </body>

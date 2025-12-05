@@ -36,6 +36,16 @@ body{
 
 }
 
+.buttonStyleFullWidth {
+    background-color: palegoldenrod;
+    font-size: 25px;
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 20px;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
 #bodyStyle {
     margin-left: 5%;
     margin-right: 5%;
