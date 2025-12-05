@@ -1,0 +1,197 @@
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+  }
+  
+  #search-form {
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+    gap: 10px;
+  }
+  
+  #search-bar {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  
+  #search-btn {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(201, 201, 201);
+}
+
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+}
+
+#container-clavier {
+  display: none; /* reste contrôlé par JS */
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;               /* espace entre les touches */
+  padding: 14px;           /* espace intérieur */
+  border: 2px solid rgba(0, 0, 0, 0.61);
+  border-radius: 14px;     /* coins arrondis du conteneur */
+  background: linear-gradient(180deg, #ccccccb2, #81818185); /* léger dégradé */
+  max-width: 760px;
+  margin: 12px auto;
+  box-shadow: 0 6px 18px rgba(20,30,60,0.06);
+}
+
+#canva{
+    display: none; 
+}
+
+.letter {
+  border: none; /* retire la bordure grise si tu veux un look plus moderne */
+  margin: 0;    /* l'espacement est géré par gap */
+  background: linear-gradient(180deg, #761dc975, #ff00d471); /* bleu vif */
+  color: #000000;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 6px;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 10px;     /* ARRONDI des cases */
+  box-shadow: 0 4px 12px rgba(23,50,100,0.12);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+  user-select: none;
+  cursor: pointer;
+}
+.letter:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 10px 20px rgba(23,50,100,0.18);
+  filter: brightness(1.03);
+}
+canvas {
+    border: 1px solid black;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Center the control buttons under the canvas */
+#canva > div {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+
+
+
+
+/* Style de base pour le corps */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Conteneur de la pop-up (caché par défaut) */
+#schpopup {
+  display: none; /* Caché par défaut */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Contenu de la pop-up */
+.popup-content {
+  background: white;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 300px;
+}
+
+/* Bouton de fermeture */
+.close-btn {
+  background: rgb(23, 0, 85);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.close-btn:hover {
+  background: rgb(25, 2, 124);
+}
+.popup-titre{
+  background: rgb(23, 0, 85);
+  padding: 5px;
+  color: white;
+}
+
+#robot{
+  width: 350px;
+  height: 350px;
+}
+
+.highlight {
+  background-color: yellow;
+  color: black;
+}
+
+/* Modal (help iframe) styles */
+.modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+.modal[aria-hidden="false"] {
+  display: flex;
+}
+.modal-content {
+  background: #fff;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 800px;
+  max-height: 80vh;
+  padding: 12px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+}
+#help-iframe {
+  border: none;
+  width: 100%;
+  height: 64vh;
+}
+#help-btn {
+  margin-left: 8px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  background: #dedede;
+  border: none;
+  cursor: pointer;
+}
