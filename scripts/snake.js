@@ -7,6 +7,20 @@ function rotateArrayRight(arr, newStart){
     return result;
 }
 
+function clone (src) {
+    return JSON.parse(JSON.stringify(src));
+}
+
+// Game settings
+const settings = {
+    gridSize: 10,
+    tileSize: 30,
+    speedMs: 200
+}
+let started = false
+let loopHandle
+
+
 const MVTDIR_UP = 0;
 const MVTDIR_DOWN = 1;
 const MVTDIR_LEFT = 2;
@@ -46,12 +60,30 @@ class Snake{
     }
 
     move(){
+        const oldPositions = clone(this.snakeSegments);
         for (let i = 0; i < this.nbSegments; ++i){
             let dirSwitch = this.directionSwitches[i];
             this.snakeSegments[i].x += (dirSwitch === MVTDIR_LEFT ? -1 : (dirSwitch === MVTDIR_RIGHT ? 1 : 0));
             this.snakeSegments[i].y += (dirSwitch === MVTDIR_UP ? -1 : (dirSwitch === MVTDIR_DOWN? 1 : 0));
         }
         this.directionSwitches = rotateArrayRight(this.directionSwitches, this.direction);
+
+        for (let i = 0; i < this.nbSegments; ++i){
+            if (oldPositions[i].x === this.snakeSegments[0].x && oldPositions[i].y === this.snakeSegments[0].y){
+                started = false;
+                clearInterval(loopHandle);
+            }
+        }
+
+        if (
+            this.snakeSegments[0].x < 0
+            || this.snakeSegments[0].x >= settings.gridSize
+            || this.snakeSegments[0].y < 0
+            || this.snakeSegments[0].y >= settings.gridSize
+        ){
+            started = false;
+            clearInterval(loopHandle);
+        }
     }
 
     changeDirection(keyCode){
@@ -81,18 +113,13 @@ class Snake{
 (function () {
     'use strict'
 
-    // Game settings
-    const settings = {
-        gridSize: 15,
-        tileSize: 20,
-        speedMs: 200
-    }
+    let bg = new Image(300, 300);
+    bg.src = "../assets/img/background.png"
 
     // Game state
     let canvas, ctx
     let snake = []
     let score = 0
-    let started = false
 
     function loop() {
         requestAnimationFrame(loop)
@@ -103,14 +130,6 @@ class Snake{
         }
 
         ctx = canvas.getContext('2d')
-        
-        // Initialize snake with 4 segments
-        // snake = [
-        //     { x: 7, y: 7 },
-        //     { x: 6, y: 7 },
-        //     { x: 5, y: 7 },
-        //     { x: 4, y: 7 }
-        // ]
 
         score = 0
         updateScore()
@@ -128,6 +147,7 @@ class Snake{
         // Clear canvas (white background)
         ctx.fillStyle = '#ffffff'
         ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.drawImage(bg, 0, 0)
 
         // Draw grid
         ctx.strokeStyle = '#e0e0e0'
@@ -156,13 +176,14 @@ class Snake{
         })
     }
 
-    snake = new Snake(7, 7, MVTDIR_RIGHT, 4)
+    snake = new Snake(5, 5, MVTDIR_RIGHT, 5)
     // Initialize on page load
     loop()
     window.onkeydown = (e) => {
         if (!started && e.code === "Space"){
             started = true;
-            setInterval(
+            snake = new Snake(5, 5, MVTDIR_RIGHT, 5);
+            loopHandle = setInterval(
                 () => {
                     snake.move();
                     draw();
