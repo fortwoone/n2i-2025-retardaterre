@@ -78,6 +78,10 @@ let snakeBodyTail3 = new Image(30, 30);
 snakeBodyTail3.src = "../assets/img/snake/tail3.png"
 let snakeBodyTurn = new Image(30, 30);
 snakeBodyTurn.src = "../assets/img/snake/turn.png"
+let apple = new Image(30, 30);
+apple.src = "../assets/img/apple.png"
+let pear = new Image(30, 30);
+pear.src = "../assets/img/pear.png"
 
 function drawImg(context, img, x, y, hflip, vflip){
     const storedTransform = context.getTransform();
@@ -284,6 +288,28 @@ class Snake{
     }
 }
 
+class Fruit{
+    type;
+    x;
+    y;
+    constructor(type, x, y){
+        this.type = type;
+        this.y = y;
+        this.x = x;
+    }
+
+    draw(context){
+        let posX = settings.tileSize * this.x;
+        let posY = settings.tileSize * this.y;
+
+        context.drawImage(
+            this.type ? pear : apple,
+            posX,
+            posY
+        )
+    }
+}
+
 (function () {
     'use strict'
 
@@ -292,7 +318,8 @@ class Snake{
 
     // Game state
     let canvas, ctx
-    let snake = []
+    let snake
+    let fruit
     let score = 0
 
     function loop() {
@@ -312,8 +339,9 @@ class Snake{
 
     function updateScore() {
         const scoreEl = document.getElementById('score')
-        if (scoreEl) scoreEl.textContent = String(score).padStart(3, '0')
+        if (scoreEl) scoreEl.textContent = String(score).padStart(3, score.toString())
     }
+
 
     function draw() {
         if (!ctx) return
@@ -348,9 +376,31 @@ class Snake{
             ctx.fillRect(x + 1, y + 1, settings.tileSize - 2, settings.tileSize - 2)
         })
         snake.draw(ctx);
+
+        fruit.draw(ctx);
     }
 
     snake = new Snake(5, 5, MVTDIR_RIGHT, 5)
+
+    function spawnFruit(){
+        let spawnedFruit = Math.random();
+
+
+        let posX = Math.random() * (settings.tileSize - 1);
+        let posY = Math.random() * (settings.tileSize - 1);
+        while (
+            snake.snakeSegments.some((segment, index) => {return segment.x === posX && segment.y === posY })
+            ){
+            posX = Math.random() * (settings.tileSize - 1);
+            posY = Math.random() * (settings.tileSize - 1);
+        }
+
+        let created = new Fruit(true, posX, posY);
+        return created
+    }
+
+    fruit = spawnFruit()
+
     // Initialize on page load
     loop()
     window.onkeydown = (e) => {
@@ -360,6 +410,11 @@ class Snake{
             loopHandle = setInterval(
                 () => {
                     snake.move();
+                    if (snake.snakeSegments[0].x === fruit.x && snake.snakeSegments[0].y === fruit.y){
+                        score += 5 * (fruit.type ? 3 : 1);
+                        fruit = spawnFruit();
+                    }
+                    updateScore();
                     draw();
                 },
                 400
