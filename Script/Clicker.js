@@ -25,7 +25,7 @@ function reset(){
 function showxfirstchar(){
     str=txt.substring(0, click)
     str=makeBold(str,wordsToBold)
-    text.innerHTML = str;
+    text.innerHTML = `<span style="font-size: 30px;">${str}</span>`;
 }
 
 var wordsToBold=["responsable"];
