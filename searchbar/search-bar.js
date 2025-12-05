@@ -24,7 +24,7 @@ function onSearchChange(searchString) {
 function openSnakePopup() {
     const snakePopup = document.getElementById('snake-popup');
     if (snakePopup) {
-        snakePopup.style.display = 'flex';
+        document.location.href = "../www/snake.html";
     }
 }
 
