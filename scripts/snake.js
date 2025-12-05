@@ -1,3 +1,42 @@
+const MVTDIR_UP = 0;
+const MVTDIR_DOWN = 1;
+const MVTDIR_LEFT = 2;
+const MVTDIR_RIGHT = 3;
+
+// Utility to check where one should turn.
+function checkTurn(enumA, enumB){
+    if (enumA === enumB){
+        return {
+            needsTurn: false,
+            angle: 0
+        }
+    }
+    if (enumA === MVTDIR_UP && enumB === MVTDIR_LEFT || enumB === MVTDIR_UP && enumA === MVTDIR_LEFT){
+        return {
+            needsTurn: true,
+            angle: 90
+        }
+    }
+    if (enumA === MVTDIR_UP && enumB === MVTDIR_RIGHT || enumB === MVTDIR_UP && enumA === MVTDIR_RIGHT){
+        return {
+            needsTurn: true,
+            angle: 180
+        }
+    }
+    if (enumA === MVTDIR_DOWN && enumB === MVTDIR_RIGHT || enumB === MVTDIR_DOWN && enumA === MVTDIR_RIGHT){
+        return {
+            needsTurn: true,
+            angle: -90
+        }
+    }
+    if (enumA === MVTDIR_DOWN && enumB === MVTDIR_LEFT || enumB === MVTDIR_DOWN && enumA === MVTDIR_LEFT){
+        return {
+            needsTurn: true,
+            angle: 0
+        }
+    }
+}
+
 function rotateArrayRight(arr, newStart){
     let result = arr;
     result.reverse();
@@ -17,14 +56,50 @@ const settings = {
     tileSize: 30,
     speedMs: 200
 }
+
+const TO_RADIANS = Math.PI/180;
+
 let started = false
 let loopHandle
 
+let snakeHead = new Image(30, 30);
+snakeHead.src = "../assets/img/snake/head.png"
+let snakeBodyS = new Image(30, 30);
+snakeBodyS.src = "../assets/img/snake/straight_body.png"
+let snakeBodyUndulate1 = new Image(30, 30);
+snakeBodyUndulate1.src = "../assets/img/snake/undulate1.png"
+let snakeBodyUndulate2 = new Image(30, 30);
+snakeBodyUndulate2.src = "../assets/img/snake/undulate2.png"
+let snakeBodyTail1 = new Image(30, 30);
+snakeBodyTail1.src = "../assets/img/snake/tail1.png"
+let snakeBodyTail2 = new Image(30, 30);
+snakeBodyTail2.src = "../assets/img/snake/tail2.png"
+let snakeBodyTail3 = new Image(30, 30);
+snakeBodyTail3.src = "../assets/img/snake/tail3.png"
+let snakeBodyTurn = new Image(30, 30);
+snakeBodyTurn.src = "../assets/img/snake/turn.png"
 
-const MVTDIR_UP = 0;
-const MVTDIR_DOWN = 1;
-const MVTDIR_LEFT = 2;
-const MVTDIR_RIGHT = 3;
+function drawImg(context, img, x, y, hflip, vflip){
+    const storedTransform = context.getTransform();
+    context.translate(
+        x + (hflip ? img.width : 0),
+        y + (vflip ? img.height : 0)
+    )
+    context.scale(
+        hflip ? -1 : 1,
+        vflip ? -1 : 1
+    )
+    context.drawImage(0, 0)
+    context.setTransform(storedTransform);
+}
+
+function drawRotatedImg(context, image, angleInRad, positionX, positionY, axisX, axisY) {
+    let storedTransform = context.getTransform();
+    context.translate(positionX, positionY);
+    context.rotate(angleInRad);
+    context.drawImage(image, -axisX, -axisY);
+    context.setTransform(storedTransform);
+}
 
 class SnakeSegment{
     x; y;
@@ -108,6 +183,105 @@ class Snake{
             }
         }
     }
+
+    draw(context){
+        for (let i = 0; i < this.nbSegments; ++i){
+            if (i === 0){
+                let rotated = 0.0;
+                switch(this.directionSwitches[0]){
+                    case MVTDIR_UP:
+                        rotated = 0;
+                        break;
+                    case MVTDIR_DOWN:
+                        rotated = 180;
+                        break;
+                    case MVTDIR_LEFT:
+                        rotated = -90;
+                        break;
+                    case MVTDIR_RIGHT:
+                        rotated = 90;
+                        break;
+                }
+                drawRotatedImg(
+                    context,
+                    snakeHead,
+                    TO_RADIANS * rotated,
+                    this.snakeSegments[0].x * settings.tileSize + 15,
+                    this.snakeSegments[0].y * settings.tileSize + 15,
+                    snakeHead.width / 2,
+                    snakeHead.height / 2
+                )
+                continue;
+            }
+            if (i === this.nbSegments - 1){
+                let rotated = 0.0;
+                switch(this.directionSwitches[this.nbSegments - 1]){
+                    case MVTDIR_UP:
+                        rotated = 180;
+                        break;
+                    case MVTDIR_DOWN:
+                        rotated = 0;
+                        break;
+                    case MVTDIR_LEFT:
+                        rotated = 90;
+                        break;
+                    case MVTDIR_RIGHT:
+                        rotated = -90;
+                        break;
+                }
+                drawRotatedImg(
+                    context,
+                    snakeBodyTail1,
+                    TO_RADIANS * rotated,
+                    this.snakeSegments[this.nbSegments - 1].x * settings.tileSize + 15,
+                    this.snakeSegments[this.nbSegments - 1].y * settings.tileSize + 15,
+                    snakeHead.width / 2,
+                    snakeHead.height / 2
+                )
+                continue;
+            }
+            const previousSegDir = this.directionSwitches[i - 1];
+            const currentSegDir = this.directionSwitches[i];
+
+            let turnProperties = checkTurn(previousSegDir, currentSegDir);
+            if (!turnProperties.needsTurn){
+                let rotated = 0.0;
+                switch(currentSegDir){
+                    case MVTDIR_UP:
+                        rotated = 0;
+                        break;
+                    case MVTDIR_DOWN:
+                        rotated = 180;
+                        break;
+                    case MVTDIR_LEFT:
+                        rotated = 90;
+                        break;
+                    case MVTDIR_RIGHT:
+                        rotated = -90;
+                        break;
+                }
+                drawRotatedImg(
+                    context,
+                    snakeBodyUndulate1,
+                    TO_RADIANS * rotated,
+                    this.snakeSegments[i].x * settings.tileSize + 15,
+                    this.snakeSegments[i].y * settings.tileSize + 15,
+                    snakeBodyUndulate1.width / 2,
+                    snakeBodyUndulate1.height / 2
+                )
+                continue
+            }
+            drawRotatedImg(
+                context,
+                snakeBodyTurn,
+                turnProperties.angle * TO_RADIANS,
+                this.snakeSegments[i].x * settings.tileSize + 15,
+                this.snakeSegments[i].y * settings.tileSize + 15,
+                snakeBodyTurn.width / 2,
+                snakeBodyTurn.height / 2
+            )
+        }
+    }
 }
 
 (function () {
@@ -131,9 +305,9 @@ class Snake{
 
         ctx = canvas.getContext('2d')
 
-        score = 0
+        // score = 0
         updateScore()
-        draw()
+        // draw()
     }
 
     function updateScore() {
@@ -169,11 +343,11 @@ class Snake{
         snake.snakeSegments.forEach((segment, index) => {
             const x = segment.x * settings.tileSize
             const y = segment.y * settings.tileSize
-            const color = index === 0 ? '#9ef4c9' : '#41d17b' // head is lighter
-
-            ctx.fillStyle = color
+             // head is lighter
+            ctx.fillStyle = index === 0 ? '#9ef4c9' : '#41d17b'
             ctx.fillRect(x + 1, y + 1, settings.tileSize - 2, settings.tileSize - 2)
         })
+        snake.draw(ctx);
     }
 
     snake = new Snake(5, 5, MVTDIR_RIGHT, 5)
