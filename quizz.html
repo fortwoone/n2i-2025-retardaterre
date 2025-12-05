@@ -4,20 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="stylesquizz.css">
+    <link rel="stylesheet" href="./style/style.css">
     <title>Document</title>
 </head>
 
 <body>
-    <header class="center bold ttpx">
+    <header id="centerHeader">
         <h1>Quizz Retardaterre</h1>
     </header>
     <main>
-        <section class="center flex">
-            <div class="verticalbigborder">
+        <div id="boxQuizz" >
+            <div id="conteneurQuizz">
                 <p>1. Selon la demarche, quel est l'apport principal de Linux concernant la dimension « inclusive » de
-                    la
-                    démarche NIRD ?</p>
+                    la démarche NIRD ?</p>
                 <div class="horizontal enormousborder" href="#">
                     <input type="checkbox" class="boxed">A) Il permet de réduire les inégalités d'accès au numérique
                     grâce à sa gratuité et son fonctionnement sur du matériel varié.
@@ -142,134 +141,19 @@
                     <input type="checkbox" class="boxed">D) Elle ne peut être installée que par des professionnels de
                     l'informatique.
                 </div>
+                <div>
+                    <button id="validate-btn" class="buttonStyle" onclick>
+                        Valider
+                    </button>
+                </div>
+                <div id="score-display">
+                    
+                </div>
 
             </div>
-        </section>
+        </div>
     </main>
+    <script src ="scriptQuizz.js"></script>
 </body>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-
-        // 1. NETTOYAGE DU HTML ET PRÉPARATION
-        // On sélectionne tous les conteneurs de réponses
-        const answerContainers = document.querySelectorAll('.horizontal.enormousborder');
-
-        answerContainers.forEach((container, questionIndex) => {
-            // On récupère le contenu brut (texte et inputs mélangés)
-            const inputs = container.querySelectorAll('input');
-
-            // On vide le conteneur pour le reconstruire proprement
-            const newContainerHTML = [];
-
-            // On parcourt les noeuds enfants pour associer input et texte
-            let currentNodes = Array.from(container.childNodes);
-
-            // On vide le conteneur visuel
-            container.innerHTML = '';
-
-            currentNodes.forEach(node => {
-                if (node.nodeName === "INPUT") {
-                    // C'est une checkbox
-                    let wrapper = document.createElement('label');
-                    wrapper.className = 'answer-row';
-
-                    // On configure la checkbox pour agir comme un bouton radio (un seul choix)
-                    node.type = "checkbox"; // On garde checkbox mais on gère la logique via JS
-                    node.name = `q${questionIndex}`; // Pour grouper si on passait en radio
-
-                    // Gestion du "Radio behavior" sur des checkboxes
-                    node.addEventListener('change', function () {
-                        if (this.checked) {
-                            // Décocher les autres cases de la même question
-                            container.querySelectorAll('input').forEach(box => {
-                                if (box !== this) box.checked = false;
-                            });
-                        }
-                    });
-
-                    wrapper.appendChild(node);
-                    container.appendChild(wrapper);
-                } else if (node.nodeType === 3 && node.textContent.trim() !== "") {
-                    // C'est du texte, on l'ajoute au dernier label créé
-                    let lastLabel = container.lastElementChild;
-                    if (lastLabel) {
-                        let span = document.createElement('span');
-                        span.textContent = node.textContent.trim();
-                        lastLabel.appendChild(span);
-                    }
-                }
-            });
-        });
-
-        // 2. CRÉATION DU BOUTON VALIDER
-        const mainDiv = document.querySelector('.verticalbigborder');
-        const btn = document.createElement('button');
-        btn.id = "validate-btn";
-        btn.textContent = "Valider mes réponses";
-        mainDiv.appendChild(btn);
-
-        const scoreDiv = document.createElement('div');
-        scoreDiv.id = "score-display";
-        mainDiv.appendChild(scoreDiv);
-
-        // 3. LOGIQUE DE CORRECTION
-        // Tableau des réponses correctes (0 = A, 1 = B, 2 = C, 3 = D)
-        // Basé sur le quiz précédent
-        const correctAnswers = [
-            0, // Q1 -> A
-            1, // Q2 -> B
-            0, // Q3 -> A
-            1, // Q4 -> B
-            1, // Q5 -> B
-            0, // Q6 -> A
-            1, // Q7 -> B
-            1, // Q8 -> B (Attention ton HTML Q8 a un bug texte en A)
-            0, // Q9 -> A (Attention ton HTML Q9 a un bug texte en A)
-            0  // Q10 -> A
-        ];
-
-        btn.addEventListener('click', () => {
-            let score = 0;
-            const containers = document.querySelectorAll('.horizontal.enormousborder');
-
-            containers.forEach((container, index) => {
-                const inputs = container.querySelectorAll('input');
-                const correctIndex = correctAnswers[index];
-                let isQuestionCorrect = false;
-
-                // Reset styles
-                container.querySelectorAll('.answer-row').forEach(row => {
-                    row.classList.remove('correct-answer', 'wrong-answer');
-                });
-
-                inputs.forEach((input, inputIndex) => {
-                    const parentRow = input.parentElement;
-
-                    // Si c'est la bonne réponse
-                    if (inputIndex === correctIndex) {
-                        parentRow.classList.add('correct-answer'); // On montre la bonne réponse en vert
-                        if (input.checked) {
-                            isQuestionCorrect = true;
-                        }
-                    }
-
-                    // Si l'utilisateur a coché une mauvaise réponse
-                    if (input.checked && inputIndex !== correctIndex) {
-                        parentRow.classList.add('wrong-answer'); // Rouge
-                    }
-                });
-
-                if (isQuestionCorrect) score++;
-            });
-
-            // Affichage du score
-            scoreDiv.textContent = `Votre score : ${score} / ${correctAnswers.length}`;
-            scoreDiv.style.color = score > 5 ? "#27ae60" : "#c0392b";
-
-            // Scroll vers le score
-            scoreDiv.scrollIntoView({ behavior: "smooth" });
-        });
-    });
-</script>
 
 </html>
