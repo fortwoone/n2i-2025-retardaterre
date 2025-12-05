@@ -12,7 +12,10 @@ function onSearchChange(searchString) {
     // Check if "snake" was typed (case-insensitive)
     if (searchString.toLowerCase().trim() === 'snake') {
         openSnakePopup();
-    }
+    } 
+    if (searchString.toLowerCase().trim() === 'demarche') {
+        openNirdPopup();
+    } 
     
     return searchString;
 }
@@ -22,6 +25,14 @@ function openSnakePopup() {
     const snakePopup = document.getElementById('snake-popup');
     if (snakePopup) {
         snakePopup.style.display = 'flex';
+    }
+}
+
+// Function to open the evidence popup
+function openNirdPopup() {
+    const nirdPopup = document.getElementById('nird-popup');
+    if (nirdPopup) {
+        nirdPopup.style.display = 'flex';
     }
 }
 
